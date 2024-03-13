@@ -1,41 +1,33 @@
 import "./App.css"
 import "@aws-amplify/ui-react/styles.css";
 import {API, Storage} from "aws-amplify";
-import {
-    withAuthenticator,
-    Button,
-    Heading,
-    Image,
-    Text,
-    View,
-    Flex, TextField,
-} from "@aws-amplify/ui-react";
-import {listNotes} from "./graphql/queries";
+import {Button, Flex, Heading, Image, Text, TextField, View, withAuthenticator,} from "@aws-amplify/ui-react";
+import {listNotes, helloWorld} from "./graphql/queries";
 import React, {useEffect, useState} from "react";
-import {
-    createNote as createNoteMutation,
-    deleteNote as deleteNoteMutation,
-} from "./graphql/mutations";
+import {createNote as createNoteMutation, deleteNote as deleteNoteMutation,} from "./graphql/mutations";
 
 function App({signOut}) {
     const [notes, setNotes] = useState([]);
+    const [greeting, setGreeting] = useState("");
 
     useEffect(() => {
         fetchNotes();
     }, []);
 
     async function fetchNotes() {
-        const apiData = await API.graphql({query: listNotes})
+        const apiData = await API.graphql({query: listNotes});
         const notesFromAPI = apiData.data.listNotes.items;
         await Promise.all(
             notesFromAPI.map(async (note) => {
                 if (note.image) {
-                    const url = await Storage.get(note.name);
-                    note.image = url;
+                    note.image = await Storage.get(note.name);
                 }
             })
         )
         setNotes(notesFromAPI)
+
+        const greetingData = await API.graphql({query: helloWorld});
+        setGreeting(greetingData.data.helloWorld.body);
     }
 
     async function createNote(event) {
@@ -69,6 +61,7 @@ function App({signOut}) {
     return (
         <View className="App">
             <Heading level={1}>My Notes App</Heading>
+            <p>{greeting}</p>
             <View as="form" margin="3rem 0" onSubmit={createNote}>
                 <Flex direction="row" justifyContent="center">
                     <TextField

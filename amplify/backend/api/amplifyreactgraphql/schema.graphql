@@ -4,3 +4,14 @@ type Note @model @auth(rules: [ { allow: public } ] ) {
   description: String
   image: String
 }
+
+type statusResult {
+  statusCode: Int
+  body: String
+}
+
+type Query {
+  helloWorld: statusResult
+  @function(name: "helloWorld-${env}")
+  @auth(rules: [{allow: public}])
+}
