@@ -7,6 +7,7 @@ exports.handler = async (event) => {
     console.log(`EVENT: ${JSON.stringify(event)}`);
 
     const auth = new GoogleAuth({
+        projectId: process.env.GOOGLE_CLOUD_PROJECT,
         scopes: ['https://www.googleapis.com/auth/drive.metadata.readonly'],
     });
     console.log('GOOGLE_APPLICATION_CREDENTIALS', process.env.GOOGLE_APPLICATION_CREDENTIALS);
