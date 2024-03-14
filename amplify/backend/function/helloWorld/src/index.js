@@ -6,8 +6,6 @@ const fs = require('fs');
  */
 exports.handler = async (event) => {
     console.log(`EVENT: ${JSON.stringify(event)}`);
-    const cre = fs.readFileSync(process.env.GOOGLE_APPLICATION_CREDENTIALS, 'utf8')
-    console.log('credentials.json', cre);
 
     const auth = new google.auth.GoogleAuth({
         projectId: process.env.GOOGLE_CLOUD_PROJECT,
