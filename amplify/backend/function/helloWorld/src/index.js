@@ -9,7 +9,9 @@ exports.handler = async (event) => {
     const auth = new GoogleAuth({
         scopes: ['https://www.googleapis.com/auth/drive.metadata.readonly'],
     });
-    console.log(auth)
+    console.log('GOOGLE_APPLICATION_CREDENTIALS', process.env.GOOGLE_APPLICATION_CREDENTIALS);
+    console.log('GOOGLE_CLOUD_PROJECT', process.env.GOOGLE_CLOUD_PROJECT);
+    console.log(JSON.stringify(auth));
 
     return {
         statusCode: 200,
