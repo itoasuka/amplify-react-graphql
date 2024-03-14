@@ -1,5 +1,6 @@
 const {google} = require('googleapis');
 const fs = require('fs');
+const keyFilename = process.env.GOOGLE_APPLICATION_CREDENTIALS ?? ""
 
 /**
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
@@ -11,11 +12,12 @@ exports.handler = async (event) => {
 
     const auth = new google.auth.GoogleAuth({
         projectId: process.env.GOOGLE_CLOUD_PROJECT,
+        keyFilename,
         scopes: ['https://www.googleapis.com/auth/drive.metadata.readonly'],
     });
     console.log(JSON.stringify(auth));
 
-    const drive = google.drive({version: 'v3', auth: auth});
+    const drive = google.drive({version: 'v3', auth});
 
     const params = {pageSize: 3};
     const res = await drive.files.list(params);
