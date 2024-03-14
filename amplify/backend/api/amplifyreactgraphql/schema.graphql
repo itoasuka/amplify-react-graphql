@@ -13,5 +13,5 @@ type statusResult {
 type Query {
   helloWorld: statusResult
   @function(name: "helloWorld-${env}")
-  @auth(rules: [{allow: public}])
+  @auth(rules: [{allow: private, operation: [read], provider: userPool}])
 }
