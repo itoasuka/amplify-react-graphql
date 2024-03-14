@@ -6,7 +6,8 @@ import {listNotes, helloWorld} from "./graphql/queries";
 import React, {useEffect, useState} from "react";
 import {createNote as createNoteMutation, deleteNote as deleteNoteMutation,} from "./graphql/mutations";
 
-function App({signOut}) {
+
+function App({signOut, user}) {
     const [notes, setNotes] = useState([]);
     const [greeting, setGreeting] = useState("");
 
@@ -15,7 +16,12 @@ function App({signOut}) {
     }, []);
 
     async function fetchNotes() {
-        const apiData = await API.graphql({query: listNotes});
+        const token = user.getSignInUserSession().idToken.getJwtToken();
+        const myInit = {
+            Authorization: token
+        }
+
+        const apiData = await API.graphql({query: listNotes}, myInit);
         const notesFromAPI = apiData.data.listNotes.items;
         await Promise.all(
             notesFromAPI.map(async (note) => {
@@ -26,12 +32,13 @@ function App({signOut}) {
         )
         setNotes(notesFromAPI)
 
-        const greetingData = await API.graphql({query: helloWorld});
+        const greetingData = await API.graphql({query: helloWorld}, myInit);
         setGreeting(greetingData.data.helloWorld.body);
     }
 
     async function createNote(event) {
         event.preventDefault();
+
         const form = new FormData(event.target);
         const image = form.get("image")
         const data = {
@@ -85,7 +92,7 @@ function App({signOut}) {
                         as="input"
                         type="file"
                         style={{alignSelf: "end"}}
-                        />
+                    />
                     <Button type="submit" variation="primary">
                         Create Note
                     </Button>
@@ -108,7 +115,7 @@ function App({signOut}) {
                             <Image
                                 src={note.image}
                                 alt={`visual aid for ${notes.name}`}
-                                style={{ width: 400 }}
+                                style={{width: 400}}
                             />
                         )}
                         <Button variation="link" onClick={() => deleteNote(note)}>

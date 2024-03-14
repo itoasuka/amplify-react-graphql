@@ -13,5 +13,6 @@ type statusResult {
 type Query {
   helloWorld: statusResult
   @function(name: "helloWorld-${env}")
-  @auth(rules: [{allow: private, provider: userPools}])
+  @aws_cognito_user_pools
+  @aws_api_key
 }
