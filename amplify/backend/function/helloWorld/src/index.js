@@ -12,6 +12,12 @@ exports.handler = async (event) => {
     });
     console.log(JSON.stringify(auth));
 
+    const drive = google.drive({version: 'v3', auth: auth});
+
+    const params = {pageSize: 3};
+    const res = await drive.files.list(params);
+    console.log(res.data);
+
     return {
         statusCode: 200,
     //  Uncomment below to enable CORS requests
