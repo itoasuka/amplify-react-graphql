@@ -1,4 +1,4 @@
-const {GoogleAuth} = require('google-auth-library');
+const {google} = require('googleapis');
 
 /**
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
@@ -6,12 +6,10 @@ const {GoogleAuth} = require('google-auth-library');
 exports.handler = async (event) => {
     console.log(`EVENT: ${JSON.stringify(event)}`);
 
-    const auth = new GoogleAuth({
+    const auth = new google.auth.GoogleAuth({
         projectId: process.env.GOOGLE_CLOUD_PROJECT,
         scopes: ['https://www.googleapis.com/auth/drive.metadata.readonly'],
     });
-    console.log('GOOGLE_APPLICATION_CREDENTIALS', process.env.GOOGLE_APPLICATION_CREDENTIALS);
-    console.log('GOOGLE_CLOUD_PROJECT', process.env.GOOGLE_CLOUD_PROJECT);
     console.log(JSON.stringify(auth));
 
     return {
