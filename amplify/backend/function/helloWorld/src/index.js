@@ -7,7 +7,6 @@ exports.handler = async (event) => {
     console.log(`EVENT: ${JSON.stringify(event)}`);
 
     const auth = new google.auth.GoogleAuth({
-        projectId: process.env.GOOGLE_CLOUD_PROJECT,
         scopes: ['https://www.googleapis.com/auth/drive'],
     });
     console.log(JSON.stringify(auth));
