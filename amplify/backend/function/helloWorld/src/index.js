@@ -1,5 +1,4 @@
 const {google} = require('googleapis');
-const fs = require('fs');
 
 /**
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
