@@ -1,16 +1,23 @@
 type Note @model @auth(rules: [ { allow: public } ] ) {
+  "ID"
   id: ID!
+  "名前"
   name: String!
+  "詳細"
   description: String
+  "画像"
   image: String
 }
 
 type statusResult {
+  "ステータスコード"
   statusCode: Int
+  "ボディ"
   body: String
 }
 
 type Query {
+  "ハローワールド"
   helloWorld: statusResult
   @function(name: "helloWorld-${env}")
   @aws_cognito_user_pools
