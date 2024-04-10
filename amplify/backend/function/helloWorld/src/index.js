@@ -17,6 +17,10 @@ exports.handler = async (event) => {
     const res = await drive.files.list(params);
     console.log(res.data);
 
+    const sheet = google.sheets({version: 'v4', auth});
+
+    await getSheet(sheet);
+
     return {
         statusCode: 200,
     //  Uncomment below to enable CORS requests
@@ -27,3 +31,10 @@ exports.handler = async (event) => {
         body: JSON.stringify(`Hello from Lambda!: ${process.cwd()}`),
     };
 };
+
+async function getSheet(sheets) {
+    const params = { spreadsheetId: "1-J-gCUfP6yQ3Q8wE018c9wS44rA0nSy-C_qvYut5Ugw", range: "2024" };
+    const response = await sheets.spreadsheets.values.get(params);
+
+    console.log(JSON.stringify(response.data, null, 2));
+}
